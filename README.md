@@ -59,27 +59,29 @@ Five sources of information are concatenated at the input of every generator:
 5. $\mathbf{z}\sim\mathcal N(\mathbf 0, I_{16})$ – latent noise enabling one-to-many mappings.
 
 The total generator loss is a weighted sum of three terms
+The total generator loss is a weighted sum of three terms:
+
 $$
-\mathcal{L}_{G}= \mathcal{L}_{\text{adv}}(G) + \lambda_{\text{cyc}}\mathcal{L}_{\text{cyc}}(G,F) + \lambda_{\text{id}}\mathcal{L}_{\text{id}}(G,F), \quad \lambda_{\text{cyc}} = 10, \quad \lambda_{\text{id}} = 0.1
+\mathcal{L}_{G} = \mathcal{L}_{\text{adv}}(G) + \lambda_{\text{cyc}}\mathcal{L}_{\text{cyc}}(G,F) + \lambda_{\text{id}}\mathcal{L}_{\text{id}}(G,F), \quad \lambda_{\text{cyc}} = 10, \quad \lambda_{\text{id}} = 0.1
 $$
 
 * **Adversarial loss (LSGAN)**
 
-  $$
-  \mathcal{L}_{\text{adv}}(G) = \frac{1}{2} \mathbb{E}_{x\sim p_X, c\sim p_C, z\sim p_Z} \left[(D_Y(G(x,c,z), c)-1)^2\right]
-  $$
+$$
+\mathcal{L}_{\text{adv}}(G) = \frac{1}{2} \mathbb{E}_{x\sim p_X, c\sim p_C, z\sim p_Z} \left[(D_Y(G(x,c,z), c)-1)^2\right]
+$$
 
 * **Cycle consistency (L1)**
 
-  $$
-  \mathcal{L}_{\text{cyc}}(G,F) = \mathbb{E}_{x,c}\left[\lVert F(G(x,c,z),c,\mathbf{0})-x\rVert_{1}\right] + \mathbb{E}_{y,c}\left[\lVert G(F(y,c,z),c,\mathbf{0})-y\rVert_{1}\right]
-  $$
+$$
+\mathcal{L}_{\text{cyc}}(G,F) = \mathbb{E}_{x,c}\left[\lVert F(G(x,c,z),c,\mathbf{0})-x\rVert_{1}\right] + \mathbb{E}_{y,c}\left[\lVert G(F(y,c,z),c,\mathbf{0})-y\rVert_{1}\right]
+$$
 
 * **Identity preservation (L1)**
 
-  $$
-  \mathcal{L}_{\text{id}}(G,F) = \mathbb{E}_{y,c}\left[\lVert G(y,c,\mathbf{0})-y\rVert_{1}\right] + \mathbb{E}_{x,c}\left[\lVert F(x,c,\mathbf{0})-x\rVert_{1}\right]
-  $$
+$$
+\mathcal{L}_{\text{id}}(G,F) = \mathbb{E}_{y,c}\left[\lVert G(y,c,\mathbf{0})-y\rVert_{1}\right] + \mathbb{E}_{x,c}\left[\lVert F(x,c,\mathbf{0})-x\rVert_{1}\right]
+$$
 
 The latent vector is set to **zero** in the cycle/identity passes to ensure that the inverse mapping is deterministic and centred.
 
